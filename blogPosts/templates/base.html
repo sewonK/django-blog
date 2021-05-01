@@ -1,0 +1,16 @@
+{% comment %} blogPosts/templates/base.html {% endcomment %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>snulion</title>
+    {% load static %}
+    {% load sass_tags %}
+    <link rel="stylesheet" type="text/css" href="{% sass_src 'blogPosts/scss/style.scss' %}">
+  </head>
+  <header>Snulion Blog</header>
+  <body>
+  {% block content %}
+  {% endblock %}
+  </body>
+</html>

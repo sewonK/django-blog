@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div>
+      <a href="{% url 'blogPosts:index' %}">home</a>
+      <h1>{{ post.title }}</h1>
+      <p style="width: 70%;">{{ post.content }}</p>
+      <a href="{% url 'blogPosts:delete' id=post.id %}">삭제</a>
+    </div>
+{% endblock content %}
