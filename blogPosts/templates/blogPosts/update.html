@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>update post</h1>
+    <form action="{% url 'blogPosts:modify' post.id %}" method="POST">
+      {% csrf_token %}
+      <p>title</p>
+      <input name="title" value={{post.title}} /> <br />
+      <p>content</p>
+      <textarea name="content" rows="30" cols="50" >{{post.content}}</textarea> <br />
+      <input type="submit" value="submit" />
+    </form>
+{% endblock content %}

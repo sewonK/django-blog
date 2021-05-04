@@ -6,5 +6,6 @@
       <h1>{{ post.title }}</h1>
       <p style="width: 70%;">{{ post.content }}</p>
       <a href="{% url 'blogPosts:delete' id=post.id %}">삭제</a>
+      <a href="{% url 'blogPosts:update' id=post.id %}">수정</a>
     </div>
 {% endblock content %}

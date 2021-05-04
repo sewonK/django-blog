@@ -26,3 +26,14 @@ def delete(request, id):
     post.delete()
     return redirect('blogPosts:index')
     # redirect index로 가면 get을 타서 다시 내용을 볼 수 있음
+
+def update(request, id):
+    post = Post.objects.get(id=id)
+    return render(request, 'blogPosts/update.html', {'post':post})
+
+def modify(request, id):
+    post = Post.objects.get(id=id)
+    post.title = request.POST['title']
+    post.content = request.POST['content']
+    post.save()
+    return render(request, 'blogPosts/show.html', {'post':post})
