@@ -1,14 +1,40 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>POSTS</h1>
-    {% comment %} <a href="/posts/new">new post</a> {% endcomment %}
-    <a href="{% url 'blogPosts:new' %}">new post</a>
-    {% for post in posts %}
-      <div style="border: 1px solid grey;">
-        <a href="/posts/{{ post.id }}">
-          <h3>{{ post.title }}</h3>
-        </a>
-      </div>
-    {% endfor %}
+<div>
+  <h1>POSTS</h1>
+  {% for key, value in colleges %}
+    <h3>{{forloop.counter}}. {{key}}: {{value}}명</h3>
+  {% endfor %}
+
+  {% if user.is_authenticated %}
+    <h3>같은 학교 User: 
+    {% if collegeFriends.count == 0 %}
+      같은 학교 사람이 없습니다.
+    {% else %}
+      {% for friend in collegeFriends %}
+        {{friend.username}}
+      {% endfor %}
+    {% endif %}
+    </h3> 
+    <h3>같은 전공 User:
+    {% if majorFriends.count == 0 %}
+      같은 전공 사람이 없습니다.
+    {% else %}
+      {% for friend in majorFriends %}
+        {{friend.username}}
+      {% endfor %}
+    {% endif %}
+    </h3>
+  {% endif %}
+
+  <a href="{% url 'blogPosts:new' %}">new post</a>
+  {% for post in posts %}
+    <div style="border: 1px solid grey;">
+      <a href="/posts/{{ post.id }}">
+        <h3>{{ post.title }}</h3>
+      </a>
+    </div>
+  {% endfor %}
+</div>
 {% endblock content %}

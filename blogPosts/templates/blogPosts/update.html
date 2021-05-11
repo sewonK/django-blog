@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>update post</h1>
-    <form action="{% url 'blogPosts:modify' post.id %}" method="POST">
+    <form action="{% url 'blogPosts:show' post.id %}" method="POST">
       {% csrf_token %}
       <p>title</p>
       <input name="title" value={{post.title}} /> <br />

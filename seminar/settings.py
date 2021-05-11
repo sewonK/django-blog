@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'sass_processor',
     'blogPosts.apps.BlogpostsConfig',
+    'accounts.apps.AccountsConfig', #추가
 ]
 
 MIDDLEWARE = [
@@ -128,3 +129,5 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SASS_PROCESSOR_ENABLED =  True
 SASS_PROCESSOR_ROOT =  os.path.join(BASE_DIR, 'blogPosts', 'static')
+# LOGIN_REDIRECT_URL = "/posts/"  #추가
+# LOGOUT_REDIRECT_URL = "/posts/"  #추가
