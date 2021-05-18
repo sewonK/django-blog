@@ -4,6 +4,12 @@
 <h1>update post</h1>
     <form action="{% url 'blogPosts:show' post.id %}" method="POST">
       {% csrf_token %}
+      <p>태그 선택</p>
+      {% for tag in tags %}
+        {{ tag.content }}
+        <input name="tags" type="checkbox" value={{tag.id}} />
+      {% endfor %}
+      
       <p>title</p>
       <input name="title" value={{post.title}} /> <br />
       <p>content</p>

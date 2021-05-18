@@ -2,9 +2,23 @@
 
 {% block content %}
 <div>
+	<div>
+	  태그
+	  {% for tag in tags %}
+	    <a href="{% url 'tags:read' id=tag.id %}">{{ tag.content }}</a>
+	  {% endfor %}
+    {% if user.is_authenticated %}    
+	    <form action="{% url 'tags:create' %}" method="POST">        
+	      {% csrf_token %}
+	      <input type="text" name="content"/>
+	      <button type="submit">태그 추가</button>
+	    </form>
+	  {% endif %}
+	</div>
+
   <h1>POSTS</h1>
-  {% for key, value in colleges %}
-    <h3>{{forloop.counter}}. {{key}}: {{value}}명</h3>
+  {% for college in colleges %}
+    <h3>{{forloop.counter}}. {{college.college}}: {{college.count}}명</h3>
   {% endfor %}
 
   {% if user.is_authenticated %}
@@ -28,12 +42,20 @@
     </h3>
   {% endif %}
 
-  <a href="{% url 'blogPosts:new' %}">new post</a>
+	{% if user.is_authenticated %}
+    <a href="{% url 'blogPosts:new' %}">new post</a>
+  {% endif %}
+
   {% for post in posts %}
     <div style="border: 1px solid grey;">
       <a href="/posts/{{ post.id }}">
         <h3>{{ post.title }}</h3>
       </a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'blogPosts:like' id=post.id %}">
+          {{ post.like_users.count }} Likes
+        </a>
+      {% endif %}
     </div>
   {% endfor %}
 </div>

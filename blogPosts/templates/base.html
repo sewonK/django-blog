@@ -1,4 +1,3 @@
-{% comment %} blogPosts/templates/base.html {% endcomment %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -12,7 +11,11 @@
     <div style="text-align: right;">
         {% if user.is_authenticated %}
              {{ user.get_username }}님, 안녕하세요<br/>
-             {{ user.profile.college }}, {{ user.profile.major}} <br/>
+            <div>
+              내가 좋아한 글 : {{ user.like_posts.count }}개
+            </div>
+             학교: {{ user.profile.college }}<br/>
+             전공: {{ user.profile.major}} <br/>
              <a href="{% url 'logout'%}?next={{request.path}}">로그아웃</a>
              <a href="{% url 'edit'%}?next={{request.path}}">내정보 수정하기</a>
         {% else %}

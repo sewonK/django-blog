@@ -6,12 +6,12 @@
     {% csrf_token %}
     재학중인 학교:
     <br>
-    <input name="college" type="text" value={{user.profile.college}}>
+    <input name="college" type="text" value="{{user.profile.college}}">
     <br>
     <br>
     전공:
     <br>
-    <input name="major" type="text" value={{user.profile.major}}>
+    <input name="major" type="text" value="{{user.profile.major}}">
     <br>
     <br>
     <input type="submit" value="변경하기!">
