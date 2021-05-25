@@ -1,32 +1,88 @@
 <!DOCTYPE html>
 <html>
+
   <head>
     <meta charset="utf-8">
     <title>snulion</title>
     {% load static %}
     {% load sass_tags %}
-    <link rel="stylesheet" type="text/css" href="{% sass_src 'blogPosts/scss/style.scss' %}">
+    <link rel="stylesheet" type="text/css" href="{% sass_src 'blogPosts/scss/base.scss' %}">
+    {% block style %}{% endblock style %}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.deep_purple-pink.min.css"/>
+    <script defer="defer" src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <script type="module" src="{% static 'blogPosts/js/base.js' %}"></script>
+    {% block js %}{% endblock js %}
   </head>
-  <header>
-    <div style="text-align: right;">
-        {% if user.is_authenticated %}
-             {{ user.get_username }}님, 안녕하세요<br/>
-            <div>
-              내가 좋아한 글 : {{ user.like_posts.count }}개
-            </div>
-             학교: {{ user.profile.college }}<br/>
-             전공: {{ user.profile.major}} <br/>
-             <a href="{% url 'logout'%}?next={{request.path}}">로그아웃</a>
-             <a href="{% url 'edit'%}?next={{request.path}}">내정보 수정하기</a>
-        {% else %}
-             <a href="{% url 'signup'%}">회원가입</a> 
-             <a href="{% url 'login'%}?next={{request.path}}">로그인</a>
-        {% endif %}
-    </div>
-    Snulion Blog
-  </header>
+
   <body>
-  {% block content %}
-  {% endblock %}
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+          <!-- Title -->
+          <span class="mdl-layout-title">Snulion Blog</span>
+          <!-- Add spacer, to align navigation to the right -->
+          <div class="mdl-layout-spacer"></div>
+          <!-- Navigation. We hide it in small screens. -->
+          <nav class="mdl-navigation mdl-layout--large-screen-only">
+            {% if user.is_authenticated %}
+              <div style="padding-right: 10px; border-right: 1px solid white;">{{ user.get_username }}님, 안녕하세요</div>
+              <div style="padding: 0 10px; border-right: 1px solid white;">학교:
+                {{ user.profile.college }}</div>
+              <div style="padding: 0 10px; border-right: 1px solid white">전공:
+                {{ user.profile.major }}</div>
+              <div style="padding-left: 10px">
+                내가 좋아한 글 :
+                {{ user.like_posts.count }}개
+              </div>
+              <a id="logout" class="mdl-navigation__link" href="{% url 'logout'%}?next={{request.path}}">로그아웃</a>
+              <a class="mdl-navigation__link" href="{% url 'edit'%}?next={{request.path}}">내 정보 수정하기</a>
+            {% else %}
+              <a class="mdl-navigation__link" href="{% url 'signup' %}">회원가입</a>
+              <a class="mdl-navigation__link" href="{% url 'login'%}?next={{request.path}}">로그인</a>
+            {% endif %}
+          </nav>
+        </div>
+      </header>
+      <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title">Snulion Blog</span>
+        <nav class="mdl-navigation">
+          {% if user.is_authenticated %}
+            <a class="mdl-navigation__link" href="{% url 'logout'%}?next={{request.path}}">로그아웃</a>
+            <a class="mdl-navigation__link" href="{% url 'edit'%}?next={{request.path}}">내 정보 수정하기</a>
+          {% else %}
+            <a class="mdl-navigation__link" href="{% url 'signup' %}">회원가입</a>
+            <a class="mdl-navigation__link" href="{% url 'login'%}?next={{request.path}}">로그인</a>
+          {% endif %}
+        </nav>
+      </div>
+      <main class="mdl-layout__content">
+        <div class="page-content">
+          <!-- Your content goes here -->
+          {% block content %}{% endblock content %}
+        </div>
+      </main>
+      <div id="log-out-modal">
+        <div class="modal-header">
+          오늘은 총&nbsp;<span class="viewed-post-count">0</span>개의 글을 읽으셨네요!
+        </div>
+        <ul class="modal-content"></ul>
+        <div class="modal-footer">
+          <button class="confirm">
+            로그아웃
+          </button>
+          <button class="cancel">
+            취소
+          </button>
+        </div>
+      </div>
+      <footer>
+        <div class="copyright-container">
+          <img class="logo" src="{% static 'blogPosts/img/likelion_white_logo.png' %}">
+          <span id="copyright-text" class="copyright">SNU LIKELION © 2020</span>
+        </div>
+      </footer>
+    </div>
   </body>
+
 </html>

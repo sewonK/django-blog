@@ -1,62 +1,118 @@
 {% extends 'base.html' %}
-
+{% load sass_tags %}
+{% block style %}
+  <link rel="stylesheet" type="text/css" href="{% sass_src 'blogPosts/scss/index.scss' %}">
+{% endblock style %}
+{% load static %}
+{% block js %}
+  <script type="module" src="{% static 'blogPosts/js/index.js' %}"></script>
+{% endblock js %}
 {% block content %}
-<div>
-	<div>
-	  태그
-	  {% for tag in tags %}
-	    <a href="{% url 'tags:read' id=tag.id %}">{{ tag.content }}</a>
-	  {% endfor %}
-    {% if user.is_authenticated %}    
-	    <form action="{% url 'tags:create' %}" method="POST">        
-	      {% csrf_token %}
-	      <input type="text" name="content"/>
-	      <button type="submit">태그 추가</button>
-	    </form>
-	  {% endif %}
-	</div>
+  <div class="tag-search-container">
+    <div class="tag-container">
+      태그
+      {% for tag in tags %}
+        <a href="{% url 'tags:read' id=tag.id %}">{{ tag.content }}</a>
+      {% endfor %}
+      {% if user.is_authenticated %}
+        <form action="{% url 'tags:create' %}" method="POST">
+          {% csrf_token %}
+          <input type="text" name="content"/>
+          <button type="submit">태그 추가</button>
+        </form>
+      {% endif %}
+    </div>
+    <div class="search-container">
+      <input id="search-bar" type="text" placeholder="타이틀을 입력해주세요">
+      <button id="search-btn">검색</button>
+      <button id="reset-btn">리셋</button>
+    </div>
+  </div>
 
-  <h1>POSTS</h1>
+  <h1 class="post-main-title">
+    POSTS
+    {% if user.is_authenticated %}
+      <a href="{% url 'blogPosts:new' %}" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored new-post-button">
+        <i class="material-icons">add</i>
+      </a>
+    {% endif %}
+  </h1>
+
   {% for college in colleges %}
-    <h3>{{forloop.counter}}. {{college.college}}: {{college.count}}명</h3>
+    <h3>{{forloop.counter}}.
+      {{college.college}}:
+      {{college.count}}명</h3>
   {% endfor %}
 
   {% if user.is_authenticated %}
-    <h3>같은 학교 User: 
-    {% if collegeFriends.count == 0 %}
-      같은 학교 사람이 없습니다.
-    {% else %}
-      {% for friend in collegeFriends %}
-        {{friend.username}}
-      {% endfor %}
-    {% endif %}
-    </h3> 
+    <h3>같은 학교 User:
+      {% if collegeFriends.count == 0 %}
+        같은 학교 사람이 없습니다.
+      {% else %}
+        {% for friend in collegeFriends %}
+          {{friend.username}}
+        {% endfor %}
+      {% endif %}
+    </h3>
     <h3>같은 전공 User:
-    {% if majorFriends.count == 0 %}
-      같은 전공 사람이 없습니다.
-    {% else %}
-      {% for friend in majorFriends %}
-        {{friend.username}}
-      {% endfor %}
-    {% endif %}
+      {% if majorFriends.count == 0 %}
+        같은 전공 사람이 없습니다.
+      {% else %}
+        {% for friend in majorFriends %}
+          {{friend.username}}
+        {% endfor %}
+      {% endif %}
     </h3>
   {% endif %}
 
-	{% if user.is_authenticated %}
-    <a href="{% url 'blogPosts:new' %}">new post</a>
-  {% endif %}
-
-  {% for post in posts %}
-    <div style="border: 1px solid grey;">
-      <a href="/posts/{{ post.id }}">
-        <h3>{{ post.title }}</h3>
-      </a>
-      {% if user.is_authenticated %}
-        <a href="{% url 'blogPosts:like' id=post.id %}">
-          {{ post.like_users.count }} Likes
-        </a>
-      {% endif %}
-    </div>
-  {% endfor %}
-</div>
+  <div class="post-container">
+    {% for post in posts %}
+      <div class="demo-card-square mdl-card mdl-shadow--2dp">
+        <div class="post-header">
+          <div class="author-container">
+            {% if post.author == request.user %}
+              <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored">
+                <i class="material-icons">mood</i>
+              </button>
+            {% else %}
+              <button class="mdl-button mdl-js-button mdl-button--icon">
+                <i class="material-icons">mood</i>
+              </button>
+            {% endif %}
+            <span>{{post.author}}</span>
+          </div>
+          <div class="like-container">
+            {% if user.is_authenticated %}
+              <a href="{% url 'blogPosts:like' id=post.id %}" class="material-icons mdl-badge mdl-badge--overlap" data-badge="{{ post.like_users.count }}">
+                {% if user in post.like_users.all %}
+                  favorite
+                {% else %}
+                  favorite_border
+                {% endif %}
+              </a>
+            {% else %}
+              <div class="material-icons mdl-badge mdl-badge--overlap" data-badge="{{ post.like_users.count }}">
+                favorite
+              </div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="mdl-card__title mdl-card--expand">
+          <h2 class="mdl-card__title-text">
+            <a href="{% url 'blogPosts:show' post.id %}">
+              {{ post.title }}
+            </a>
+          </h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+          {{ post.content }}
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+          <a href="{% url 'blogPosts:show' post.id %}" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+            show details
+          </a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
 {% endblock content %}
