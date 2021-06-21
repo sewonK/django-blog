@@ -68,9 +68,8 @@ class CommentView:
     })
       
   def delete(request, id, cid):
-    comment = Comment.objects.get(id=cid)
-    comment.delete()
-    return redirect(f'/posts/{id}')
+    comment = Comment.objects.get(id=cid).delete()
+    return JsonResponse({})
   
   def like(request, id, cid):
     comment = Comment.objects.get(id=cid)
@@ -79,7 +78,9 @@ class CommentView:
         comment.likecomment_set.get(user=request.user).delete()
     else:
         LikeComment.objects.create(user=request.user, comment=comment)
-    return redirect(f'/posts/{id}')
+    return JsonResponse({
+      'commentLikeCount': comment.likecomment_set.count()
+    })
 
 class LikeView:
   def create(request, id):
