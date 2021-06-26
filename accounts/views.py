@@ -17,6 +17,7 @@ def signup(request):
 
 def edit(request):
   if request.method == 'POST':
+    user = request.user
     college = request.POST['college']
     major = request.POST['major']
     Profile.objects.filter(user=user).update(college=college, major=major)
