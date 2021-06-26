@@ -11,11 +11,13 @@ def index(request):
   if request.method == 'GET':
     posts = Post.objects.all().order_by('-created_at')
     tags = Tag.objects.all()
-    colleges = Profile.objects.values('college').annotate(count=Count('college')).order_by('-count')
+    colleges = Profile.objects.values('college').filter(college__gt='').annotate(count=Count('college')).order_by('-count')
     collegeFriends = None
     majorFriends = None
     if request.user.is_authenticated :
+      if (request.user.profile.college != ""):
         collegeFriends = User.objects.filter(profile__college=request.user.profile.college).exclude(username=request.user.username)
+      if (request.user.profile.major != ""):
         majorFriends = User.objects.filter(profile__major=request.user.profile.major).exclude(username=request.user.username)          
     return render(request, 'blogPosts/index.html', {'posts': posts, 'colleges':colleges, 'tags': tags, 'collegeFriends':collegeFriends, 'majorFriends':majorFriends})
       

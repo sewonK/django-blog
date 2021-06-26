@@ -13,6 +13,7 @@
       {{ post.author }}</p>
     <p>작성일:
       {{ post.created_at }}</p>
+    <div id="map" style="width:400px;height:400px;"></div>
     <p style="width: 70%;">{{ post.content }}</p>
     {% if request.user == post.author %}
       <a href="{% url 'blogPosts:update' id=post.id %}">수정</a>
@@ -62,4 +63,12 @@
       {% endfor %}
     </div>
   </div>
+  <script>
+    var mapOptions = {
+      center: new naver.maps.LatLng(37.3595704, 127.105399),
+      zoom: 10
+    };
+
+    var map = new naver.maps.Map('map', mapOptions);
+  </script>
 {% endblock content %}

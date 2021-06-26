@@ -5,6 +5,8 @@
     <meta charset="utf-8">
     <title>snulion</title>
     {% load static %}
+    {% load socialaccount %}
+    {% providers_media_js %}
     {% load sass_tags %}
     <link rel="stylesheet" type="text/css" href="{% sass_src 'blogPosts/scss/base.scss' %}">
     {% block style %}{% endblock style %}
@@ -14,6 +16,7 @@
     <script type="module" src="{% static 'blogPosts/js/base.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
     <script src="{% static 'blogPosts/js/base2.js' %}"></script>
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=fg3jep7gui"></script>
     {% block js %}{% endblock js %}
   </head>
 
@@ -39,6 +42,12 @@
             {% else %}
               <a class="mdl-navigation__link" href="{% url 'signup' %}">회원가입</a>
               <a class="mdl-navigation__link" href="{% url 'login'%}?next={{request.path}}">로그인</a>
+              <a class="mdl-navigation__link" href="{% provider_login_url 'google' %}">
+                <img src="{% static 'blogPosts/img/btn_google_signin_dark_normal_web.png' %}" style="width: 200px; height: auto;"/>
+              </a>
+              <a class="mdl-navigation__link" href="{% provider_login_url 'naver'%}">
+                <img src="{% static 'blogPosts/img/btnG_축약형.png' %}" style="width: 100px; height: auto;"/>
+              </a>
             {% endif %}
           </nav>
         </div>
@@ -52,6 +61,12 @@
           {% else %}
             <a class="mdl-navigation__link" href="{% url 'signup' %}">회원가입</a>
             <a class="mdl-navigation__link" href="{% url 'login'%}?next={{request.path}}">로그인</a>
+            <a class="mdl-navigation__link" href="{% provider_login_url 'google' %}">
+              <img src="{% static 'blogPosts/img/btn_google_signin_dark_normal_web.png' %}" style="width: 200px; height: auto;"/>
+            </a>
+            <a class="mdl-navigation__link" href="{% provider_login_url 'naver'%}">
+              <img src="{% static 'blogPosts/img/btnG_축약형.png' %}" style="width: 100px; height: auto;"/>
+            </a>
           {% endif %}
         </nav>
       </div>

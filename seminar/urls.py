@@ -26,7 +26,9 @@ urlpatterns = [
     path('', blogPosts.views.index, name='index'),
     path('posts/', include('blogPosts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('social_accounts/', include('allauth.urls')),
     path('accounts/signup/', accounts.views.signup, name='signup'),
     path('accounts/edit/', accounts.views.edit, name='edit'),
+     path('accounts/edit/sync-etl', accounts.views.sync_etl, name='sync_etl'),
     path('tags/', include('tags.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
