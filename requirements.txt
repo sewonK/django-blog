@@ -1,6 +1,8 @@
 appdirs==1.4.4
 asgiref==3.3.4
 astor==0.8.1
+beautifulsoup4==4.9.3
+bs4==0.0.1
 certifi==2021.5.30
 cffi==1.14.5
 chardet==4.0.0
@@ -30,6 +32,7 @@ rjsmin==1.1.0
 rply==0.7.8
 selenium==3.141.0
 six==1.15.0
+soupsieve==2.2.1
 sqlparse==0.4.1
 Twiggy==0.4.7
 twiggy-goodies==0.12.0
