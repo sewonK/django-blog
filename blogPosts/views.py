@@ -64,7 +64,11 @@ class CommentView:
   def create(request, id):
     content = request.POST['content']
     comment = Comment.objects.create(post_id=id, content=content, author=request.user)
+    comments = Comment.objects.filter(post_id=id).annotate(count=Count('like_users'))
     return JsonResponse({
+      'commentId': comment.id, 
+      'commentCount': comments.count(),
+      'commentLikeCount': comment.likecomment_set.count(),
       'commentAuthor': comment.author.username, 
       'commentCreatedAt': comment.created_at.strftime("%Y-%m-%d %H:%M")
     })
