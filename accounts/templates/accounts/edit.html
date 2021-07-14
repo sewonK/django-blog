@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>
+    My Info!
+  </h1>
+  <form method="POST" action="{%url 'edit' %}">
+    {% csrf_token %}
+    재학중인 학교:
+    <br>
+    <input name="college" type="text" value="{{user.profile.college}}">
+    <br>
+    <br>
+    전공:
+    <br>
+    <input name="major" type="text" value="{{user.profile.major}}">
+    <br>
+    <br>
+    <input type="submit" value="변경하기!">
+  </form>
+  <br>
+  <br>
+  <br>
+  <form method="POST" action="{% url 'sync_etl' %}">
+    {% csrf_token %}
+    etl 아이디:
+    <input name="etl_username" type="text">
+    etl 비밀번호:
+    <input name="etl_password" type="password">
+    <input type="submit" value="etl 동기화!">
+  </form>
+  <h1>내 수업 목록</h1>
+  {% for etlclass in etlclasses %}
+    {{etlclass.name}}<br>
+  {% endfor %}
+{% endblock content %}
